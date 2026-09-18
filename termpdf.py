@@ -521,7 +521,7 @@ class Document(fitz.Document):
         self.page_states = [ Page_State(i) for i in range(0,self.pages + 1) ]
 
     def clear_page(self, p):
-        cmd = {'a': 'd', 'd': 'a', 'i': p + 1}
+        cmd = {'a': 'd', 'd': 'a', 'i': p + 1, 'q': 1}
         write_gr_cmd(cmd)
 
     def cells_to_pixels(self, *coords):
@@ -684,8 +684,9 @@ class Document(fitz.Document):
             # clear prevpage
             self.clear_page(self.prevpage)
             # display the image
-            cmd = {'a': 'p', 'i': p + 1, 'z': -1}
-            success = write_gr_cmd_with_response(cmd)
+            cmd = {'a': 'p', 'i': p + 1, 'z': -1, 'q': 1}
+            write_gr_cmd(cmd)
+            success = True
             if not success:
                 self.page_states[p].stale = True
                 bar.message = 'failed to load page ' + str(p+1)
