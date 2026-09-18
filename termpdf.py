@@ -447,6 +447,10 @@ class Document(fitz.Document):
                 elif style == 'alphabetic lowercase':
                     lp = prefix + to_alphabetic(lp)
                     lp = lp.lower()
+                elif style == 'none' or style is None:
+                    # PDF spec 12.4.2: /S absent => label is the /P prefix only,
+                    # no numeric suffix (old code concatenated them: "1"+"1"="11")
+                    lp = prefix if prefix else str(lp)
                 else:
                     lp = prefix + str(lp)
                 self.logical_pages[p] = lp 
